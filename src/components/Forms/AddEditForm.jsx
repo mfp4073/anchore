@@ -1,36 +1,25 @@
 import { React, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { addPerson, getPerson } from "../../../server/api";
+import { addPerson, editPerson } from "../../../server/api";
 
 
 function AddEditForm({activeEditPerson, handleGetAllPeople, handleClose = props}) {
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const { register, getValues, handleSubmit, formState: { errors } } = useForm();
   const [formEdit, setFormEdit] = useState(false);
-  // const [person, setPerson] = useState({});
+  const [editedPerson, setEditedPerson] = useState({});
 
   useEffect(() => {
     if (activeEditPerson.id !== undefined) {
       console.log("EDIT PERSON")
       console.log("the id is", activeEditPerson.id)
-      setFormEdit(true); /// LOGIC TO SET ENDPOINT TO EDIT OR ADD PERSON
+      setEditedPerson(editedPerson); /// LOGIC TO SET ENDPOINT TO EDIT OR ADD PERSON
     } else {
       console.log("ADD PERSON")
     }
   }, [activeEditPerson.id]);
 
-  const handleSave = async (data, e) => {
-    e.preventDefault();
-    // CHECK USEFORM STATE FOR ENDPOINT
-    // IF EDIT, CALL EDIT PERSON
-    // IF ADD, CALL ADD PERSON
-    // const data = await addPerson(data);
-
-
-    // console.log("saved", data)
-    // addPerson(data);
-    // getAllPeople()
-    // handleClose();
-
+  const handelNewUser = async (data) => {
+    console.log("new user", data)
     try {
       await addPerson(data);
       handleGetAllPeople()
@@ -39,17 +28,74 @@ function AddEditForm({activeEditPerson, handleGetAllPeople, handleClose = props}
       console.log("error saving new person", e)
       // error handling
     }
-  };
+  }
 
-  // const handleDeletePerson = async (id) => {
-  //   try {
-  //     const people = await deletePerson(id);
-  //     //setPeople(people);
-  //     setPeople(prevPeople => prevPeople.filter(person => person.id !== id));
-  //   } catch (e) {
-  //     console.log("error deleting person", e)
-  //     // error handling
+  const handleUpdateUser = async (data) => {
+    console.log("editing user", data)
+    try {
+      await editPerson(data);
+      handleGetAllPeople()
+      handleClose();
+    } catch (e) {
+      console.log("error saving edited person", e)
+      // error handling
+    }
+  }
+
+  const handleSave = async (data, e) => {
+    e.preventDefault();
+
+    if (activeEditPerson.id !== undefined) {
+      console.log("EDIT PERSON")
+      const values = getValues()
+      console.log("form values", values)
+      const updatedPerson = {
+        ...activeEditPerson,
+        ...values,
+      };
+      try {
+        await editPerson(updatedPerson);
+        handleGetAllPeople()
+        handleClose();
+      } catch (e) {
+        console.log("error saving edited person", e)
+        // error handling
+      }
+
+    } else {
+      console.log("ADD PERSON")
+      // handelNewUser(data)
+      try {
+        await addPerson(data);
+        handleGetAllPeople()
+        handleClose();
+      } catch (e) {
+        console.log("error saving new person", e)
+        // error handling
+      }
+    }
+
+
+  };
+  // const handleSave = (data, e) => {
+  //   e.preventDefault();
+
+  //   if (activeEditPerson.id !== undefined) {
+  //     console.log("EDIT PERSON")
+  //     const values = getValues()
+  //     console.log("form values", values)
+  //     const updatedPerson = {
+  //       ...activeEditPerson,
+  //       ...values,
+  //     };
+
+  //     handleUpdateUser(updatedPerson);
+  //   } else {
+  //     console.log("ADD PERSON")
+  //     handelNewUser(data)
   //   }
+
+
   // };
 
   const handleCancel = (e) => {
