@@ -3,8 +3,12 @@ import { useForm } from "react-hook-form";
 import { addPerson, editPerson } from "../../../server/api";
 
 function AddEditForm({ activeEditPerson, handleGetAllPeople, handleClose = props }) {
-  const { register, getValues, handleSubmit, formState: { errors } } = useForm();
-  // const [editedPerson, setEditedPerson] = useState({});
+  const {
+    reset,
+    register,
+    getValues,
+    handleSubmit,
+    formState: { errors } } = useForm();
 
   // useEffect(() => {
   //   if (activeEditPerson.id !== undefined) {
@@ -15,6 +19,17 @@ function AddEditForm({ activeEditPerson, handleGetAllPeople, handleClose = props
   //     console.log("ADD PERSON")
   //   }
   // }, [activeEditPerson.id]);
+
+  useEffect(() => {
+    let defaultValues = {};
+    defaultValues.first_name = activeEditPerson.first_name || ""
+    defaultValues.last_name = activeEditPerson.last_name || ""
+    defaultValues.address = activeEditPerson.address || ""
+    defaultValues.date_of_birth = activeEditPerson.date_of_birth || ""
+    defaultValues.phone_number = activeEditPerson.phone_number || ""
+    defaultValues.notes = activeEditPerson.notes || ""
+    reset({ ...defaultValues});
+  }, []);
 
   const handleSave = async (data, e) => {
     e.preventDefault();
@@ -67,43 +82,37 @@ function AddEditForm({ activeEditPerson, handleGetAllPeople, handleClose = props
   return (
     <form onSubmit={handleSubmit(handleSave, handleError)}>
       <div>
-        <label>First Name</label>
-        <input name="name" type="text" {...register('first_name', formOptions.first_name)} />
+        <input name="name" type="text" {...register('first_name', formOptions.first_name)} placeholder="First Name" />
         <small className="text-danger">
           {errors?.first_name && errors.name.message}
         </small>
       </div>
       <div>
-        <label>Last Name</label>
-        <input name="name" type="text" {...register('last_name', formOptions.last_name)} />
+        <input name="name" type="text" {...register('last_name', formOptions.last_name)} placeholder="Last Name" />
         <small className="text-danger">
           {errors?.last_name && errors.name.message}
         </small>
       </div>
       <div>
-        <label>Address</label>
-        <input name="name" type="text" {...register('address', formOptions.address)} />
+        <input name="name" type="text" {...register('address', formOptions.address)} placeholder="Address" />
         <small className="text-danger">
           {errors?.address && errors.name.message}
         </small>
       </div>
       <div>
-        <label>DOB</label>
-        <input name="name" type="text" {...register('date_of_birth', formOptions.date_of_birth)} />
+        <input name="name" type="text" {...register('date_of_birth', formOptions.date_of_birth)} placeholder="Date of Birth" />
         <small className="text-danger">
           {errors?.date_of_birth && errors.name.message}
         </small>
       </div>
       <div>
-        <label>Phone Number</label>
-        <input name="name" type="text" {...register('phone_number', formOptions.phone_number)} />
+        <input name="name" type="text" {...register('phone_number', formOptions.phone_number)} placeholder="Phone Number" />
         <small className="text-danger">
           {errors?.phone_number && errors.name.message}
         </small>
       </div>
       <div>
-        <label>Notes</label>
-        <input name="name" type="text" {...register('notes', formOptions.notes)} />
+        <input name="name" type="text" {...register('notes', formOptions.notes)} placeholder="Notes" />
         <small className="text-danger">
           {errors?.notes && errors.name.message}
         </small>
