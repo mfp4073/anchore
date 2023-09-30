@@ -1,6 +1,5 @@
 import { useState, useCallback, useEffect, useContext } from 'react';
 import { getAllPeople, deletePerson } from "../../server/api";
-//import ModalDialog from '../components/Forms/FormModalContainer';
 import { Button, Dialog } from "@mui/material";
 import { PeopleDataContext } from '../contexts/PeopleDataContext';
 import AddEditForm from '../components/Forms/AddEditForm.jsx';
@@ -82,4 +81,3 @@ const People = () => {
 }
 
 export default People;
-//<ModalDialog activeEditId={activeEditId} open={open} handleGetAllPeople={handleGetAllPeople} handleClose={handleClose} />
