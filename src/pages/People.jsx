@@ -120,8 +120,9 @@ const People = () => {
           <AddEditForm activeEditPerson={activeEditPerson} handleGetAllPeople={handleGetAllPeople} handleClose={handleClose} />
         </DialogContent>
       </Dialog>
-      {/* <IconButton sx={{ mt: 4 }} variant="contained" color="primary" onClick={handleOpen}><AddIcon sx={{ mt: 4 }} variant="contained" color="primary" onClick={handleOpen} /></IconButton> */}
-      <IconButton className="add-button" sx={{ mt: 4 }} variant="contained" onClick={handleOpen}><AddIcon className="add-button-icon" variant="contained" onClick={handleOpen} /></IconButton>
+      <IconButton className="add-button" sx={{ mt: 4 }} variant="contained" onClick={handleOpen}>
+        <AddIcon className="add-button-icon" />
+      </IconButton>
     </>
   )
 }

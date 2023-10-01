@@ -10,7 +10,7 @@ function AddEditForm({ activeEditPerson, handleGetAllPeople, handleClose = props
     getValues,
     handleSubmit,
     formState: { errors }
-  } = useForm();
+  } = useForm({ mode: "onBlur"});
 
   // useEffect(() => {
   //   if (activeEditPerson.id !== undefined) {
@@ -72,76 +72,74 @@ function AddEditForm({ activeEditPerson, handleGetAllPeople, handleClose = props
 
   const handleError = (errors) => { }; // MAYBE HANDLE IN SUBMIT FUNCTION. MIGHT ABSTRACT EDIT/NEW AND THIS FUNCTION OUT. NOT SURE
 
-  // const formOptions = {
-  //   first_name: {
-  //     required: true, "First Name is required"},
-  //   last_name: { required: "Last Name is required" },
-  //   date_of_birth: { required: "Bday is required" },
-  //   address: { required: "Address is required" },
-  //   phone_number: { required: "Phone is required" },
-  //   notes: { required: "Notes is required" }
-  // };
+  const formOptions = {
+    first_name: { required: "First Name is required" },
+    last_name: { required: "Last Name is required" },
+    date_of_birth: { required: "Bday is required" },
+    address: { required: "Address is required" },
+    phone_number: { required: "Phone is required" },
+    notes: { required: "Notes is required" }
+  };
 
   return (
-    <form onSubmit={handleSubmit(handleSave, handleError)}>
+    <form onSubmit={handleSubmit(handleSave, handleError)} noValidate>
       <div>
         <input
           name="first_name"
           type="text"
-          {...register('first_name', { required: true, maxLength: 20 })}
+          {...register('first_name', { required: 'first name required' })}
           placeholder="First Name"
         />
         <small className="text-danger">
-          {errors?.first_name && errors.name.message}
+          {errors?.first_name && errors.first_name.message}
         </small>
       </div>
       <div>
         <input
           name="last_name"
           type="text"
-          {...register('last_name', { required: true, maxLength: 20 })}
+          {...register('last_name', { required: 'last name required' })}
           placeholder="Last Name"
         />
         <small className="text-danger">
-          {errors?.last_name && errors.name.message}
+          {errors?.last_name && errors.last_name.message}
         </small>
       </div>
       <div>
         <input
           name="address"
           type="text"
-          {...register('address', { required: true, maxLength: 20 })}
+          {...register('address', { required: 'first name required' })}
           placeholder="Address" />
         <small className="text-danger">
-          {errors?.address && errors.name.message}
+          {errors?.address && errors.address.message}
         </small>
       </div>
       <div>
         <input
           name="name"
           type="text"
+          {...register('date_of_birth', { required: 'Date of Birth required' })}
           placeholder="Date of Birth" />
         <small className="text-danger">
-          {errors?.date_of_birth && errors.name.message}
+          {errors?.date_of_birth && errors.date_of_birth.message}
         </small>
       </div>
       <div>
         <input
           name="name"
-          {...register('phone_number', { required: true, maxLength: 20 })}
+          {...register('phone_number', { required: 'phone number required' })}
           placeholder="Phone Number" />
         <small className="text-danger">
-          {errors?.phone_number && errors.name.message}
+          {errors?.phone_number && errors.phone_number.message}
         </small>
       </div>
       <div>
         <input
           name="name"
-          {...register('notes', { required: false, maxLength: 20 })}
+          {...register('notes', { required: false })}
           placeholder="Notes" />
-        <small className="text-danger">
-          {errors.notes && <p>This field is required</p>}
-        </small>
+
       </div>
       <button onClick={handleCancel}>Cancel</button>
       <button>Submit</button>
