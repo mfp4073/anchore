@@ -1,0 +1,11 @@
+button.add-button {
+  height: 3em;
+  width: 3em;
+  background: #DCDCDC;
+}
+
+.add-button-icon {
+  width: 5em;
+  height: 5em;
+  fill: white;
+}

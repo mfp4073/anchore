@@ -1,8 +1,24 @@
 import { useState, useCallback, useEffect, useContext } from 'react';
 import { getAllPeople, deletePerson } from "../../server/api";
-import { Button, Dialog } from "@mui/material";
+import {
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  IconButton,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper
+} from "@mui/material";
+import AddIcon from '@mui/icons-material/Add';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { PeopleDataContext } from '../contexts/PeopleDataContext';
 import AddEditForm from '../components/Forms/AddEditForm.jsx';
+import './people.css';
 
 const People = () => {
   const { peopleData, setPeopleData } = useContext(PeopleDataContext);
@@ -52,30 +68,60 @@ const People = () => {
 
   return (
     <>
-      <h1>ABE</h1>
-      <Button variant="contained" color="primary" onClick={handleOpen}>Add New Person</Button>
+      <h2>Add a Favorite Person</h2>
       {isLoading ? (
         <p>Loading...</p>
       ) : (
-        <ul>
-          {peopleData?.map((person) => (
-            <li key={person.id}>
-              <span>{person.first_name}</span>
-              <span>{person.last_name}</span>
-              <Button
-                onClick={() => handleDeletePerson(person.id)}
-                className='btn'
-              >
-                Delete
-              </Button>
-              <Button variant="contained" color="primary" onClick={() => handleOpen(person)}>Edit</Button>
-            </li>
-          ))}
-        </ul>
+          <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 650 }} aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell align="right">First Name</TableCell>
+                  <TableCell align="right">Last Name</TableCell>
+                  <TableCell align="right">Date of Birth</TableCell>
+                  <TableCell align="right">Phone Number</TableCell>
+                  <TableCell align="right">Address</TableCell>
+                  <TableCell align="right">Notes</TableCell>
+                  <TableCell align="right"></TableCell>
+                  <TableCell align="right"></TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {peopleData?.map((person) => (
+                  <TableRow key={person.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
+                    <TableCell component="th" scope="row">{person.first_name}</TableCell>
+                    <TableCell align="right">{person.last_name}</TableCell>
+                    <TableCell align="right">{person.date_of_birth}</TableCell>
+                    <TableCell align="right">{person.phone_number}</TableCell>
+                    <TableCell align="right">{person.address}</TableCell>
+                    <TableCell align="right">{person.notes}</TableCell>
+                    <TableCell>
+                    <Button
+                      onClick={() => handleDeletePerson(person.id)}
+                      className='btn'
+                    >
+                      Delete
+                    </Button>
+                    </TableCell>
+                    <TableCell>
+                    <Button variant="contained" color="primary" onClick={() => handleOpen(person)}>Edit</Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+          </TableBody>
+          </Table>
+          </TableContainer>
       )}
       <Dialog open={open} onClose={handleClose} >
-        <AddEditForm activeEditPerson={activeEditPerson} handleGetAllPeople={handleGetAllPeople} handleClose={handleClose} />
+        <DialogTitle>
+          Subscribe
+        </DialogTitle>
+        <DialogContent>
+          <AddEditForm activeEditPerson={activeEditPerson} handleGetAllPeople={handleGetAllPeople} handleClose={handleClose} />
+        </DialogContent>
       </Dialog>
+      {/* <IconButton sx={{ mt: 4 }} variant="contained" color="primary" onClick={handleOpen}><AddIcon sx={{ mt: 4 }} variant="contained" color="primary" onClick={handleOpen} /></IconButton> */}
+      <IconButton className="add-button" sx={{ mt: 4 }} variant="contained" onClick={handleOpen}><AddIcon className="add-button-icon" variant="contained" onClick={handleOpen} /></IconButton>
     </>
   )
 }
