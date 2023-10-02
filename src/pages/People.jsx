@@ -12,7 +12,8 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Paper
+  Paper,
+  Snackbar
 } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
@@ -24,8 +25,8 @@ const People = () => {
   const { peopleData, setPeopleData } = useContext(PeopleDataContext);
   const [isLoading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
-  const [activeEditId, setActiveEditId] = useState("");
   const [activeEditPerson, setActiveEditPerson] = useState({});
+  const [openSnack, setOpenSnack] = useState(false);
 
   const handleOpen = (person) => {
     console.log("person in modal", person)
@@ -39,8 +40,7 @@ const People = () => {
 
   const handleDeletePerson = async (id) => {
     try {
-      await deletePerson(id); // Assuming deletePerson doesn't return the updated list
-      // After successfully deleting, you can update the data by making a GET request again
+      await deletePerson(id);
       handleGetAllPeople();
     } catch (e) {
       console.log("error deleting person", e);
@@ -54,7 +54,12 @@ const People = () => {
       setPeopleData(people);
       setLoading(false);
       console.log("peopleData", peopleData);
-
+      <Snackbar
+        open={open}
+        autoHideDuration={6000}
+        message="People Loaded"
+        action={action}
+      />
     } catch (e) {
       console.log("error getting people", e);
       // error handling
@@ -76,25 +81,25 @@ const People = () => {
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
               <TableHead>
                 <TableRow>
-                  <TableCell align="right">First Name</TableCell>
-                  <TableCell align="right">Last Name</TableCell>
-                  <TableCell align="right">Date of Birth</TableCell>
-                  <TableCell align="right">Phone Number</TableCell>
-                  <TableCell align="right">Address</TableCell>
-                  <TableCell align="right">Notes</TableCell>
-                  <TableCell align="right"></TableCell>
-                  <TableCell align="right"></TableCell>
+                  <TableCell>First Name</TableCell>
+                  <TableCell>Last Name</TableCell>
+                  <TableCell>Date of Birth</TableCell>
+                  <TableCell>Phone Number</TableCell>
+                  <TableCell>Address</TableCell>
+                  <TableCell>Notes</TableCell>
+                  <TableCell></TableCell>
+                  <TableCell></TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {peopleData?.map((person) => (
                   <TableRow key={person.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
                     <TableCell component="th" scope="row">{person.first_name}</TableCell>
-                    <TableCell align="right">{person.last_name}</TableCell>
-                    <TableCell align="right">{person.date_of_birth}</TableCell>
-                    <TableCell align="right">{person.phone_number}</TableCell>
-                    <TableCell align="right">{person.address}</TableCell>
-                    <TableCell align="right">{person.notes}</TableCell>
+                    <TableCell>{person.last_name}</TableCell>
+                    <TableCell>{person.date_of_birth}</TableCell>
+                    <TableCell>{person.phone_number}</TableCell>
+                    <TableCell>{person.address}</TableCell>
+                    <TableCell>{person.notes}</TableCell>
                     <TableCell>
                     <Button
                       onClick={() => handleDeletePerson(person.id)}
@@ -113,10 +118,7 @@ const People = () => {
           </TableContainer>
       )}
       <Dialog open={open} onClose={handleClose} >
-        <DialogTitle>
-          Subscribe
-        </DialogTitle>
-        <DialogContent>
+          <DialogContent>
           <AddEditForm activeEditPerson={activeEditPerson} handleGetAllPeople={handleGetAllPeople} handleClose={handleClose} />
         </DialogContent>
       </Dialog>

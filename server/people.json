@@ -2,7 +2,7 @@
   "people": [
     {
       "id": "123897917321240",
-      "first_name": "Simone",
+      "first_name": "Simone L Kinney",
       "last_name": "Kinney",
       "address": "321 Main",
       "date_of_birth": "May 31, 2019",
@@ -19,58 +19,13 @@
       "id": "NfNx782"
     },
     {
-      "first_name": "added Simone",
+      "first_name": "sd",
       "last_name": "jkl",
       "address": "jkl",
-      "date_of_birth": "jkl",
+      "date_of_birth": "se",
       "phone_number": "jkl",
-      "notes": "sd",
+      "notes": "",
       "id": "g7Sh1vg"
-    },
-    {
-      "first_name": "Effect edit",
-      "last_name": "jkl",
-      "address": "jkl",
-      "date_of_birth": "jkl",
-      "phone_number": "jkl",
-      "notes": "jkl",
-      "id": "oydgaNr"
-    },
-    {
-      "first_name": "Abraham",
-      "last_name": "djsflk",
-      "address": "`jkldsaf",
-      "date_of_birth": "jkld",
-      "phone_number": "jkl",
-      "notes": "jkl",
-      "id": "0SagxR2"
-    },
-    {
-      "first_name": "ajddddd",
-      "last_name": "j",
-      "address": "j",
-      "date_of_birth": "",
-      "phone_number": "j",
-      "notes": "j",
-      "id": "7CLlWky"
-    },
-    {
-      "first_name": "a",
-      "last_name": "j",
-      "address": "j",
-      "date_of_birth": "",
-      "phone_number": "j",
-      "notes": "j",
-      "id": "rU_Hk1u"
-    },
-    {
-      "first_name": "jl",
-      "last_name": "jl",
-      "address": "jkl",
-      "date_of_birth": "jkl",
-      "phone_number": "jlk",
-      "notes": "jlk",
-      "id": "Lv0I-F5"
     }
   ]
 }

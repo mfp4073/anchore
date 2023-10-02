@@ -1,15 +1,16 @@
 import { React, useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { addPerson, editPerson } from "../../../server/api";
 
 function AddEditForm({ activeEditPerson, handleGetAllPeople, handleClose = props }) {
   const {
     reset,
-    watch,
+    control,
+    getFieldState,
     register,
     getValues,
     handleSubmit,
-    formState: { errors }
+    formState: { errors, invalid, isDirty, isValid }
   } = useForm({ mode: "onBlur"});
 
   // useEffect(() => {
@@ -70,10 +71,19 @@ function AddEditForm({ activeEditPerson, handleGetAllPeople, handleClose = props
     handleClose();
   };
 
+  const handleValidate = (phoneNumber) => {
+    if (PHONE_REGEX.test(phoneNumber)) {
+      errors["phoneNumber"] = null;
+    } else {
+      errors["phoneNumber"] = "Invalid phone number. Please try again."
+    }
+    return PHONE_REGEX.test(phoneNumber);
+  }
+
   const handleError = (errors) => { }; // MAYBE HANDLE IN SUBMIT FUNCTION. MIGHT ABSTRACT EDIT/NEW AND THIS FUNCTION OUT. NOT SURE
 
   const formOptions = {
-    first_name: { required: "First Name is required" },
+    first_name: { required: "First Name ⚠⚠is required" },
     last_name: { required: "Last Name is required" },
     date_of_birth: { required: "Bday is required" },
     address: { required: "Address is required" },
@@ -81,68 +91,74 @@ function AddEditForm({ activeEditPerson, handleGetAllPeople, handleClose = props
     notes: { required: "Notes is required" }
   };
 
+  let form_incomplete = (!isDirty || !isValid) ? true : false;
+  const fieldState = getFieldState("phone_number")
+
   return (
+
     <form onSubmit={handleSubmit(handleSave, handleError)} noValidate>
+      <h2>
+        {(form_incomplete) ? "Complete the fields below" : "Entries look good!"}
+      </h2>
       <div>
         <input
           name="first_name"
+          className={`abe-input${form_incomplete ? '-checked' : ''}`}
           type="text"
-          {...register('first_name', { required: 'first name required' })}
+          {...register('first_name', { required: true })}
           placeholder="First Name"
         />
-        <small className="text-danger">
-          {errors?.first_name && errors.first_name.message}
-        </small>
+        {/* <p>{getFieldState("first_name").isDirty && "dirty"}</p>{" "}
+        <p>{getFieldState("first_name").isTouched && "touched"}</p> */}
+        {errors.first_name && <p className="text-danger">first name is required</p>}
       </div>
       <div>
         <input
           name="last_name"
           type="text"
-          {...register('last_name', { required: 'last name required' })}
+          {...register('last_name', { required: true })}
           placeholder="Last Name"
         />
-        <small className="text-danger">
-          {errors?.last_name && errors.last_name.message}
-        </small>
+        {errors.last_name && <p className="text-danger">last name is required</p>}
       </div>
       <div>
         <input
           name="address"
           type="text"
-          {...register('address', { required: 'first name required' })}
+          {...register('address', { required: true })}
           placeholder="Address" />
-        <small className="text-danger">
-          {errors?.address && errors.address.message}
-        </small>
+        {errors.address && <p className="text-danger">address is required</p>}
       </div>
       <div>
         <input
           name="name"
           type="text"
-          {...register('date_of_birth', { required: 'Date of Birth required' })}
-          placeholder="Date of Birth" />
-        <small className="text-danger">
-          {errors?.date_of_birth && errors.date_of_birth.message}
-        </small>
+          {...register('date_of_birth', {
+            required: true, pattern: /^[0-9]{1,2}\/[0-9]{1,2}\/[0-9]{4}$/ })}
+          placeholder="Date of Birth - mm/dd/yy" />
+        {errors.date_of_birth && <p className="text-danger">a valid date of birth is required</p>}
       </div>
       <div>
         <input
+          className={(!errors.phone_number && getFieldState("phone_number").isTouched) ? 'form-control isvalid' : ''}
           name="name"
-          {...register('phone_number', { required: 'phone number required' })}
+          {...register('phone_number', { required: true, pattern: /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/ })}
           placeholder="Phone Number" />
-        <small className="text-danger">
-          {errors?.phone_number && errors.phone_number.message}
-        </small>
+        <p>{getFieldState("phone_number").isDirty && "dirty"}</p>{" "}
+        <p>{getFieldState("phone_number").isTouched && "touched"}</p>
+        <p>{getFieldState("phone_number").isValid && "valid"}</p>
+
+        {(!errors.phone_number && getFieldState("phone_number").isTouched) && <p className="text-danger">checkmark</p>}
+        {errors.phone_number && <p className="text-danger">a valid phone number is required</p>}
       </div>
       <div>
         <input
           name="name"
           {...register('notes', { required: false })}
           placeholder="Notes" />
-
       </div>
       <button onClick={handleCancel}>Cancel</button>
-      <button>Submit</button>
+      <button className="submit-button" disabled={form_incomplete}>Submit</button>
     </form>
   );
 }
