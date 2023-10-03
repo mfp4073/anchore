@@ -3,7 +3,6 @@ import { getAllPeople, deletePerson } from "../../server/api";
 import {
   Button,
   Dialog,
-  DialogTitle,
   DialogContent,
   IconButton,
   Table,
@@ -13,38 +12,61 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Snackbar
+  DialogTitle,
 } from "@mui/material";
-import AddIcon from '@mui/icons-material/Add';
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import {Add, Delete, Edit} from '@mui/icons-material';
+import { useSnackbar } from "notistack";
 import { PeopleDataContext } from '../contexts/PeopleDataContext';
-import AddEditForm from '../components/Forms/AddEditForm.jsx';
-import './people.css';
+import AddEditForm from '../components/forms/AddEditForm.jsx';
+import './index.css';
 
 const People = () => {
   const { peopleData, setPeopleData } = useContext(PeopleDataContext);
   const [isLoading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
   const [activeEditPerson, setActiveEditPerson] = useState({});
-  const [openSnack, setOpenSnack] = useState(false);
+  const [personToDelete, setPersonToDelete] = useState("")
+  const { enqueueSnackbar } = useSnackbar();
 
-  const handleOpen = (person) => {
-    console.log("person in modal", person)
+  // MODAL HANDLERS
+
+  const handleFormModal = (person) => {
     setActiveEditPerson(person);
     setOpen(true);
   }
 
-  const handleClose = () => {
+  const handleDeleteModal = (id) => {
+    setPersonToDelete(id);
+    setOpenDelete(true);
+  }
+
+  const handleCloseDeleteModal = (id) => {
+    setOpenDelete(false);
+  }
+
+  const handleCloseFormModal = () => {
     setOpen(false);
   }
 
+
   const handleDeletePerson = async (id) => {
+    setOpenDelete(false);
     try {
+      console.log("id", id);
       await deletePerson(id);
+      enqueueSnackbar(`Person removed 🥺`, {
+        anchorOrigin: { horizontal: 'right', vertical: 'top' },
+        variant: 'success',
+        autoHideDuration: 500
+      });
       handleGetAllPeople();
     } catch (e) {
-      console.log("error deleting person", e);
-      // error handling
+      enqueueSnackbar(`Error deleting person ${e}`, {
+        anchorOrigin: { horizontal: 'right', vertical: 'top' },
+        variant: 'error',
+        maxSnack: 1,
+      });
     }
   };
 
@@ -53,21 +75,23 @@ const People = () => {
       const people = await getAllPeople();
       setPeopleData(people);
       setLoading(false);
-      console.log("peopleData", peopleData);
-      <Snackbar
-        open={open}
-        autoHideDuration={6000}
-        message="People Loaded"
-        action={action}
-      />
+      enqueueSnackbar(`Total favorite people: ${people.length}`, {
+        anchorOrigin: { horizontal: 'right', vertical: 'top' },
+        maxSnack: 1,
+        variant: 'info',
+        autoHideDuration: 1000
+      });
     } catch (e) {
       console.log("error getting people", e);
-      // error handling
+      enqueueSnackbar(`Error retreiving people ${e}`, {
+        anchorOrigin: { horizontal: 'right', vertical: 'top' },
+        variant: 'error',
+        maxSnack: 1,
+      });
     }
   }, [setPeopleData]);
 
   useEffect(() => {
-
     handleGetAllPeople();
   }, [handleGetAllPeople]);
 
@@ -76,55 +100,81 @@ const People = () => {
       <h2>Add a Favorite Person</h2>
       {isLoading ? (
         <p>Loading...</p>
-      ) : (
-          <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} aria-label="simple table">
-              <TableHead>
-                <TableRow>
-                  <TableCell>First Name</TableCell>
-                  <TableCell>Last Name</TableCell>
-                  <TableCell>Date of Birth</TableCell>
-                  <TableCell>Phone Number</TableCell>
-                  <TableCell>Address</TableCell>
-                  <TableCell>Notes</TableCell>
-                  <TableCell></TableCell>
-                  <TableCell></TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {peopleData?.map((person) => (
-                  <TableRow key={person.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
-                    <TableCell component="th" scope="row">{person.first_name}</TableCell>
-                    <TableCell>{person.last_name}</TableCell>
-                    <TableCell>{person.date_of_birth}</TableCell>
-                    <TableCell>{person.phone_number}</TableCell>
-                    <TableCell>{person.address}</TableCell>
-                    <TableCell>{person.notes}</TableCell>
-                    <TableCell>
-                    <Button
-                      onClick={() => handleDeletePerson(person.id)}
-                      className='btn'
-                    >
-                      Delete
-                    </Button>
-                    </TableCell>
-                    <TableCell>
-                    <Button variant="contained" color="primary" onClick={() => handleOpen(person)}>Edit</Button>
-                    </TableCell>
+        ) : (
+          <div className="container">
+
+            <TableContainer component={Paper}>
+              <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>First Name</TableCell>
+                    <TableCell>Last Name</TableCell>
+                    <TableCell>Date of Birth</TableCell>
+                    <TableCell>Phone Number</TableCell>
+                    <TableCell>Address</TableCell>
+                    <TableCell>Notes</TableCell>
+                    <TableCell></TableCell>
+                    <TableCell></TableCell>
                   </TableRow>
-                ))}
-          </TableBody>
-          </Table>
-          </TableContainer>
+                </TableHead>
+                <TableBody>
+                  {peopleData?.map((person) => (
+                    <TableRow key={person.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
+                      <TableCell component="th" scope="row">{person.first_name}</TableCell>
+                      <TableCell>{person.last_name}</TableCell>
+                      <TableCell>{person.date_of_birth}</TableCell>
+                      <TableCell>{person.phone_number}</TableCell>
+                      <TableCell>{person.address}</TableCell>
+                      <TableCell>{person.notes}</TableCell>
+                      <TableCell>
+                        <Edit
+                          sx={{ color: 'grey', cursor: 'pointer' }}
+                          onClick={() => handleFormModal(person)} />
+                      </TableCell>
+                      <TableCell>
+                        <Delete
+                          sx={{ color: 'grey', cursor: 'pointer' }}
+                          onClick={() => { handleDeleteModal(person.id)}}
+                          className='btn'
+                          />
+                      </TableCell>
+                    </TableRow>
+                  ))}
+            </TableBody>
+            </Table>
+            </TableContainer>
+          </div>
       )}
-      <Dialog open={open} onClose={handleClose} >
-          <DialogContent>
-          <AddEditForm activeEditPerson={activeEditPerson} handleGetAllPeople={handleGetAllPeople} handleClose={handleClose} />
+      <IconButton formlabel="Add User" className="add-button" sx={{ mt: 4 }} variant="contained" onClick={handleFormModal}>
+        <Add className="add-button-icon" />
+      </IconButton>
+      <Dialog open={openDelete} onClose={handleCloseDeleteModal}
+        sx={{
+          "& .MuiDialog-container": {
+            justifyContent: "flex",
+            alignItems: "flex-start"
+          }
+        }}
+        PaperProps={{
+          sx: {
+            m: 20
+          }
+        }}>
+        <DialogContent className="dialog-content">
+          <DialogTitle className="dialog-title">Delete Person</DialogTitle>
+          <Button onClick={() => handleCloseDeleteModal()}>Cancel</Button>
+          <Button className="delete-button" onClick={() => handleDeletePerson(personToDelete)}>Ok</Button>
         </DialogContent>
       </Dialog>
-      <IconButton className="add-button" sx={{ mt: 4 }} variant="contained" onClick={handleOpen}>
-        <AddIcon className="add-button-icon" />
-      </IconButton>
+
+      <Dialog PaperProps={{ sx: { top: 0, width: "70%", height: "70%" } }}
+        open={open}
+        onClose={handleCloseFormModal} >
+        <DialogContent>
+          <AddEditForm activeEditPerson={activeEditPerson} handleGetAllPeople={handleGetAllPeople} handleCloseFormModal={handleCloseFormModal} />
+        </DialogContent>
+      </Dialog>
+
     </>
   )
 }

@@ -1,16 +1,20 @@
-//import { useContext }from 'react';
 import './App.css';
 import People from "./pages/People"
 import { PeopleDataContextProvider } from "./contexts/PeopleDataContext"
+import { SnackbarProvider } from 'notistack'
+import { ThemeProvider } from './contexts/ThemeContext'
 
-  const App = () => {
-    // const { peopleData } = useContext(PeopleDataContext)
+const App = () => {
 
-    return (
-      <PeopleDataContextProvider>
-        <People />
-      </PeopleDataContextProvider>
-    )
-  }
+  return (
+    <ThemeProvider>
+      <SnackbarProvider>
+        <PeopleDataContextProvider>
+          <People />
+        </PeopleDataContextProvider>
+      </SnackbarProvider>
+    </ThemeProvider>
+  )
+}
 
-  export default App
+export default App
