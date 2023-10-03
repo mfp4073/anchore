@@ -102,7 +102,6 @@ const People = () => {
         <p>Loading...</p>
         ) : (
           <div className="container">
-
             <TableContainer component={Paper}>
               <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableHead>
@@ -167,14 +166,13 @@ const People = () => {
         </DialogContent>
       </Dialog>
 
-      <Dialog PaperProps={{ sx: { top: 0, width: "70%", height: "70%" } }}
+      <Dialog PaperProps={{ sx: { top: 0, width: "100%", height: "100%" } }}
         open={open}
         onClose={handleCloseFormModal} >
         <DialogContent>
           <AddEditForm activeEditPerson={activeEditPerson} handleGetAllPeople={handleGetAllPeople} handleCloseFormModal={handleCloseFormModal} />
         </DialogContent>
       </Dialog>
-
     </>
   )
 }

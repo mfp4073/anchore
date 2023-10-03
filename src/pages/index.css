@@ -1,10 +1,44 @@
 .container {
+  overflow-x: auto;
   max-width: 1366px;
   margin: 0 auto;
-  padding: 0 60px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+
+.TableContainer {
+  width: 100%;
+}
+
+.Table {
+  width: 100%;
+}
+
+.TableBody {
+  display: block;
+}
+
+.TableRow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+}
+
+.TableHead {
+  display: none;
+}
+
+.TableCell {
+  flex: 1;
+  padding: 8px;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border-bottom: 1px solid #e0e0e0;
 }
 
 button.add-button {
@@ -22,7 +56,7 @@ button.add-button {
 h2 {
   font-size: 1.5em;
   font-weight: 500;
-  margin: 0;
+  margin: 10px 0px 20px 0px;
   text-align: left;
 }
 
@@ -36,14 +70,26 @@ h2 {
   color: grey;
 }
 
+.error-container {
+  height: 25px;
+  margin-bottom: 20px;
+}
+
 .text-danger {
   color: #bf1650;
   font-size: 12px;
+  margin: 0;
 }
 
 .text-danger::before {
   display: inline;
   content: "⚠ ";
+}
+
+.valid-check {
+  position: absolute;
+  right: 0;
+  top: 20px;
 }
 
 .dialog-content {
@@ -77,4 +123,35 @@ button.delete-button {
   font-size: 1em;
   font-weight: bold;
   cursor: none;
+}
+
+
+/* Media query for tablets */
+@media (max-width: 768px) {
+  .TableBody {
+    display: block;
+  }
+
+  .TableRow {
+    flex-direction: column;
+    padding: 16px;
+  }
+
+  .TableCell {
+    text-align: left;
+    border: none;
+  }
+}
+
+/* Media query for mobile */
+@media (max-width: 768px) {
+
+  .TableRow {
+    background-color: red;
+    ;
+  }
+
+  .TableCell {
+    padding: 0px;
+  }
 }

@@ -109,8 +109,10 @@ function AddEditForm({ activeEditPerson, handleGetAllPeople, handleCloseFormModa
             onInput={(e) => handleTextChange(e.target.value)}
             {...register('first_name', { required: true })}
           />
-          {!form_incomplete && <CheckIcon sx={{ color: 'green' }} />}
-          {errors.first_name && <p className="text-danger">first name is required</p>}
+          {!form_incomplete && <CheckIcon className="valid-check" sx={{ color: 'green' }} />}
+          <div className="error-container">
+            {errors.first_name && <p className="text-danger">first name is required</p>}
+          </div>
           <label className={(isFieldActive || activeEditPerson.last_name) ? "field-active" : ""} htmlFor="first_name">
             First Name
           </label>
@@ -123,8 +125,10 @@ function AddEditForm({ activeEditPerson, handleGetAllPeople, handleCloseFormModa
             onInput={(e) => handleTextChange(e.target.value)}
             {...register('last_name', { required: true })}
           />
-          {!form_incomplete && <CheckIcon sx={{ color: 'green' }} />}
-          {errors.last_name && <p className="text-danger">last name is required</p>}
+          {!form_incomplete && <CheckIcon className="valid-check" sx={{ color: 'green' }} />}
+          <div className="error-container">
+            {errors.last_name && <p className="text-danger">last name is required</p>}
+          </div>
           <label className={(isFieldActive || activeEditPerson.last_name) ? "field-active" : ""} htmlFor="last_name">
             Last Name
           </label>
@@ -137,8 +141,10 @@ function AddEditForm({ activeEditPerson, handleGetAllPeople, handleCloseFormModa
             onInput={(e) => handleTextChange(e.target.value)}
             {...register('address', { required: true })}
           />
-          {!form_incomplete && <CheckIcon sx={{ color: 'green' }} />}
-          {errors.address && <p className="text-danger">address is required</p>}
+          {!form_incomplete && <CheckIcon className="valid-check" sx={{ color: 'green' }} />}
+          <div className="error-container">
+            {errors.address && <p className="text-danger">address is required</p>}
+          </div>
           <label className={(isFieldActive || activeEditPerson.address) ? "field-active" : ""} htmlFor="address">
             Address
           </label>
@@ -153,8 +159,10 @@ function AddEditForm({ activeEditPerson, handleGetAllPeople, handleCloseFormModa
               required: true, pattern: /^[0-9]{1,2}\/[0-9]{1,2}\/[0-9]{4}$/
             })}
           />
-          {!form_incomplete && <CheckIcon sx={{ color: 'green' }} />}
-          {errors.date_of_birth && <p className="text-danger">a valid date of birth is required</p>}
+          {!form_incomplete && <CheckIcon className="valid-check" sx={{ color: 'green' }} />}
+          <div className="error-container">
+            {errors.date_of_birth && <p className="text-danger">a valid date of birth is required</p>}
+          </div>
           <label className={(isFieldActive || activeEditPerson.date_of_birth) ? "field-active" : ""} htmlFor="date_of_birth">
             Date of Birth - mm/dd/yy
           </label>
@@ -168,8 +176,10 @@ function AddEditForm({ activeEditPerson, handleGetAllPeople, handleCloseFormModa
             onInput={(e) => handleTextChange(e.target.value)}
             {...register('phone_number', { required: true, pattern: /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/ })}
           />
-          {!form_incomplete && <CheckIcon sx={{ color: 'green' }} />}
-          {errors.phone_number && <p className="text-danger">a valid phone number is required</p>}
+          {!form_incomplete && <CheckIcon className="valid-check" sx={{ color: 'green' }} />}
+          <div className="error-container">
+            {errors.phone_number && <p className="text-danger">a valid phone number is required</p>}
+          </div>
           <label className={(isFieldActive || activeEditPerson.phone_number) ? "field-active" : ""} htmlFor="phone_number">
             Phone number
           </label>
@@ -186,10 +196,14 @@ function AddEditForm({ activeEditPerson, handleGetAllPeople, handleCloseFormModa
             * Notes
           </label>
         </div>
-        <button onClick={handleCancel}>Cancel</button>
-        <button className="submit-button" disabled={form_incomplete}>
-          {(activeEditPerson.id) ? "Update" : "Save Changes"}
-        </button>
+        <div className="buttons-container">
+          <button onClick={handleCancel}>
+            Cancel
+          </button>
+          <button className="submit-button" disabled={form_incomplete}>
+            {(activeEditPerson.id) ? "Update" : "Save Changes"}
+          </button>
+        </div>
       </form>
     </div>
   );
