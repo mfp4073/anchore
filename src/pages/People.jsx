@@ -14,10 +14,10 @@ import {
   Paper,
   DialogTitle,
 } from "@mui/material";
-import {Add, Delete, Edit} from '@mui/icons-material';
+import { Add, Delete, Edit } from '@mui/icons-material';
 import { useSnackbar } from "notistack";
 import { PeopleDataContext } from '../contexts/PeopleDataContext';
-import AddEditForm from '../components/forms/AddEditForm.jsx';
+import AddEditForm from '../components/forms/AddEditForm';
 import './index.css';
 
 const People = () => {
@@ -49,11 +49,9 @@ const People = () => {
     setOpen(false);
   }
 
-
   const handleDeletePerson = async (id) => {
     setOpenDelete(false);
     try {
-      console.log("id", id);
       await deletePerson(id);
       enqueueSnackbar(`Person removed 🥺`, {
         anchorOrigin: { horizontal: 'right', vertical: 'top' },
@@ -69,6 +67,8 @@ const People = () => {
       });
     }
   };
+
+  // DATA HANDLERS
 
   const handleGetAllPeople = useCallback(async () => {
     try {
@@ -100,49 +100,49 @@ const People = () => {
       <h2>Add a Favorite Person</h2>
       {isLoading ? (
         <p>Loading...</p>
-        ) : (
-          <div className="container">
-            <TableContainer component={Paper}>
-              <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>First Name</TableCell>
-                    <TableCell>Last Name</TableCell>
-                    <TableCell>Date of Birth</TableCell>
-                    <TableCell>Phone Number</TableCell>
-                    <TableCell>Address</TableCell>
-                    <TableCell>Notes</TableCell>
-                    <TableCell></TableCell>
-                    <TableCell></TableCell>
+      ) : (
+        <div className="container">
+          <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 650 }} aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>First Name</TableCell>
+                  <TableCell>Last Name</TableCell>
+                  <TableCell>Date of Birth</TableCell>
+                  <TableCell>Phone Number</TableCell>
+                  <TableCell>Address</TableCell>
+                  <TableCell>Notes</TableCell>
+                  <TableCell></TableCell>
+                  <TableCell></TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {peopleData?.map((person) => (
+                  <TableRow key={person.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
+                    <TableCell component="th" scope="row">{person.first_name}</TableCell>
+                    <TableCell>{person.last_name}</TableCell>
+                    <TableCell>{person.date_of_birth}</TableCell>
+                    <TableCell>{person.phone_number}</TableCell>
+                    <TableCell>{person.address}</TableCell>
+                    <TableCell>{person.notes}</TableCell>
+                    <TableCell>
+                      <Edit
+                        sx={{ color: 'grey', cursor: 'pointer' }}
+                        onClick={() => handleFormModal(person)} />
+                    </TableCell>
+                    <TableCell>
+                      <Delete
+                        sx={{ color: 'grey', cursor: 'pointer' }}
+                        onClick={() => { handleDeleteModal(person.id) }}
+                        className='btn'
+                      />
+                    </TableCell>
                   </TableRow>
-                </TableHead>
-                <TableBody>
-                  {peopleData?.map((person) => (
-                    <TableRow key={person.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
-                      <TableCell component="th" scope="row">{person.first_name}</TableCell>
-                      <TableCell>{person.last_name}</TableCell>
-                      <TableCell>{person.date_of_birth}</TableCell>
-                      <TableCell>{person.phone_number}</TableCell>
-                      <TableCell>{person.address}</TableCell>
-                      <TableCell>{person.notes}</TableCell>
-                      <TableCell>
-                        <Edit
-                          sx={{ color: 'grey', cursor: 'pointer' }}
-                          onClick={() => handleFormModal(person)} />
-                      </TableCell>
-                      <TableCell>
-                        <Delete
-                          sx={{ color: 'grey', cursor: 'pointer' }}
-                          onClick={() => { handleDeleteModal(person.id)}}
-                          className='btn'
-                          />
-                      </TableCell>
-                    </TableRow>
-                  ))}
-            </TableBody>
+                ))}
+              </TableBody>
             </Table>
-            </TableContainer>
-          </div>
+          </TableContainer>
+        </div>
       )}
       <IconButton formlabel="Add User" className="add-button" sx={{ mt: 4 }} variant="contained" onClick={handleFormModal}>
         <Add className="add-button-icon" />

@@ -13,8 +13,6 @@ export const getPerson = async (id) => {
 };
 
 export const addPerson = async (person) => {
-  console.log("add function in API", person)
-
   const res = await fetch(`${baseUrl}/people`, {
     method: 'POST',
     headers: {
