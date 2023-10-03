@@ -56,7 +56,7 @@ const People = () => {
       enqueueSnackbar(`Person removed 🥺`, {
         anchorOrigin: { horizontal: 'right', vertical: 'top' },
         variant: 'success',
-        autoHideDuration: 500
+        autoHideDuration: 4000
       });
       handleGetAllPeople();
     } catch (e) {

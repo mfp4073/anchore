@@ -22,7 +22,6 @@ function AddEditForm({ activeEditPerson, handleGetAllPeople, handleCloseFormModa
   useEffect(() => {
     let defaultValues = {};
     defaultValues.first_name = activeEditPerson.first_name || ""
-    // handleTextChange("first_name")
     defaultValues.last_name = activeEditPerson.last_name || ""
     defaultValues.address = activeEditPerson.address || ""
     defaultValues.date_of_birth = activeEditPerson.date_of_birth || ""
@@ -47,13 +46,17 @@ function AddEditForm({ activeEditPerson, handleGetAllPeople, handleCloseFormModa
           anchorOrigin: { horizontal: 'right', vertical: 'top' },
           maxSnack: 1,
           variant: 'success',
-          autoHideDuration: 2000
+          autoHideDuration: 4000
         });
         handleGetAllPeople()
         handleCloseFormModal();
       } catch (e) {
         console.log("error saving edited person", e)
-        // error handling
+        enqueueSnackbar(`Error editing person ${e}`, {
+          anchorOrigin: { horizontal: 'right', vertical: 'top' },
+          variant: 'error',
+          maxSnack: 1,
+        });
       }
     } else {
       try {
@@ -62,13 +65,16 @@ function AddEditForm({ activeEditPerson, handleGetAllPeople, handleCloseFormModa
           anchorOrigin: { horizontal: 'right', vertical: 'top' },
           maxSnack: 1,
           variant: 'success',
-          autoHideDuration: 2000
+          autoHideDuration: 3000
         });
         handleGetAllPeople()
         handleCloseFormModal();
       } catch (e) {
-        console.log("error saving new person", e)
-        // error handling
+        enqueueSnackbar(`Error adding person ${e}`, {
+          anchorOrigin: { horizontal: 'right', vertical: 'top' },
+          variant: 'error',
+          maxSnack: 1,
+        });
       }
     }
   };
@@ -90,7 +96,7 @@ function AddEditForm({ activeEditPerson, handleGetAllPeople, handleCloseFormModa
     }
   }
 
-  const handleError = (errors) => { }; // MAYBE HANDLE IN SUBMIT FUNCTION. MIGHT ABSTRACT EDIT/NEW AND THIS FUNCTION OUT. NOT SURE
+  const handleError = (errors) => { };
 
   let form_incomplete = (!isDirty || !isValid) ? true : false;
 

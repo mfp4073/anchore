@@ -26,7 +26,7 @@ export const addPerson = async (person) => {
 
 export const editPerson = async (person) => {
   const res = await fetch(`${baseUrl}/people/${person.id}`, {
-    method: 'PUT',
+    method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
     },
