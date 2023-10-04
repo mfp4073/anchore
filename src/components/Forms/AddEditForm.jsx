@@ -170,7 +170,7 @@ function AddEditForm({ activeEditPerson, handleGetAllPeople, handleCloseFormModa
             {errors.date_of_birth && <p className="text-danger">a valid date of birth is required</p>}
           </div>
           <label className={(isFieldActive || activeEditPerson.date_of_birth) ? "field-active" : ""} htmlFor="date_of_birth">
-            Date of Birth - mm/dd/yy
+            Date of Birth - mm/dd/yyyy
           </label>
         </div>
         <div id="float-label">
@@ -199,7 +199,7 @@ function AddEditForm({ activeEditPerson, handleGetAllPeople, handleCloseFormModa
             {...register('notes', { required: false })}
           />
           <label className={(isFieldActive || activeEditPerson.notes) ? "field-active" : ""} htmlFor="notes">
-            * Notes
+            Notes
           </label>
         </div>
         <div className="buttons-container">
