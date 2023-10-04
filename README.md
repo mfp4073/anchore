@@ -37,7 +37,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-Well, it is an interesting time in Javascriptland. The last couple years have seen Create React App be deprecated and either Next.js or Vite (React) used in it's place. I chose Vite and React. As React-Hook-Form is bcoming the industry standard I used that. For off the shelf components I used Material UI. For the server/API I used an express server that uses json-server to replicate a database/REST API. It reads and writes to a local JSON file.
+Well, it is an interesting time in Javascriptland. The last couple years have seen Create React App be deprecated and either Next.js or Vite (React) used in it's place. I chose Vite and React. As React-Hook-Form is becoming the industry standard so I used that. For off the shelf components I used Material UI. For the server/API I used an express server that uses json-server to replicate a database/REST API. It reads and writes to a local JSON file.
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
